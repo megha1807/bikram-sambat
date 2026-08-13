@@ -1,0 +1,24 @@
+{
+  "name": "bikram-sambat-calendar",
+  "version": "1.8.1",
+  "description": "Bikram Sambat Datepicker Calendar Grid UI",
+  "main": "src/nepaliDatePicker.js",
+  "style": "src/nepaliDatePicker.css",
+  "scripts": {
+    "build": "browserify -e ./src/nepaliDatePicker.js -o dist/nepaliDatePicker.js && cp src/nepaliDatePicker.css dist/nepaliDatePicker.css",
+    "test": "mocha test/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/medic/bikram-sambat.git"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "browserify": "^14.4.0",
+    "mocha": "^10.2.0",
+    "chai": "^4.3.7"
+  },
+  "dependencies": {
+    "bikram-sambat": "^1.8.1"
+  }
+}
