@@ -5,14 +5,14 @@
   "main": "src/nepaliDatePicker.js",
   "style": "src/nepaliDatePicker.css",
   "scripts": {
-    "build": "browserify -e ./src/nepaliDatePicker.js -o dist/nepaliDatePicker.js && cp src/nepaliDatePicker.css dist/nepaliDatePicker.css",
+    "build": "browserify -e ./src/nepaliDatePicker.js -o dist/nepaliDatePicker.js && node -e \"require('fs').copyFileSync('src/nepaliDatePicker.css', 'dist/nepaliDatePicker.css')\"",
     "test": "mocha test/*.spec.js"
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/medic/bikram-sambat.git"
   },
-  "license": "Apache-2.0",
+  "license": "(Apache-2.0 AND ISC)",
   "devDependencies": {
     "browserify": "^14.4.0",
     "mocha": "^10.2.0",
@@ -20,5 +20,9 @@
   },
   "dependencies": {
     "bikram-sambat": "^1.8.1"
-  }
+  },
+  "files": [
+    "dist",
+    "src"
+  ]
 }

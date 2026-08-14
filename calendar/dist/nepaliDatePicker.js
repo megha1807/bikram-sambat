@@ -133,7 +133,7 @@ module.exports = {
 },{"eurodigit/src/to_non_euro":1}],3:[function(require,module,exports){
 /*
  * @fileOverview NepaliDatePicker - jQuery Plugin
- * @version 2.0.1
+ * @version 1.8.1
  *
  * @author Sanish Maharjan https://github.com/sanishmaharjan
  * @see https://github.com/sanishmaharjan/
@@ -275,7 +275,7 @@ var calendarFunctions = {};
       var bsMonthDays = calendarFunctions.getBsMonthDays(bsYear, bsMonth);
       bsDate = bsDate > bsMonthDays ? bsMonthDays : bsDate;
       var eqAdDate = calendarFunctions.getAdDateByBsDate(bsYear, bsMonth, bsDate);
-      var weekDay = eqAdDate.getDay() + 1;
+      var weekDay = eqAdDate ? eqAdDate.getDay() + 1 : 1;
       var formattedDate = calendarFunctions.bsDateFormat(dateFormatPattern, bsYear, bsMonth, bsDate);
       return {
         bsYear: bsYear,
@@ -299,6 +299,10 @@ var calendarFunctions = {};
       validationFunctions.validateBsDate(bsDate);
 
       try {
+        var maxDays = bs.daysInMonth(bsYear, bsMonth);
+        if (bsDate > maxDays) {
+          bsDate = maxDays;
+        }
         var greg = bs.toGreg(bsYear, bsMonth, bsDate);
         return new Date(greg.year, greg.month - 1, greg.day);
       } catch (e) {
@@ -379,7 +383,15 @@ var calendarFunctions = {};
       validationFunctions.validateBsMonth(bsMonth);
       validationFunctions.validateBsDate(bsDate);
 
+      var maxDays = calendarFunctions.getBsMonthDays(bsYear, bsMonth);
+      if (bsDate > maxDays) {
+        bsDate = maxDays;
+      }
+
       var eqAdDate = calendarFunctions.getAdDateByBsDate(bsYear, bsMonth, bsDate);
+      if (!eqAdDate) {
+        throw new Error('Invalid date mapping for ' + bsYear + '-' + bsMonth + '-' + bsDate);
+      }
       var weekDay = eqAdDate.getDay() + 1;
       var formattedDate = dateFormatPattern;
       formattedDate = formattedDate.replace(/%d/g, calendarFunctions.getNepaliNumber(bsDate));
@@ -436,7 +448,11 @@ var calendarFunctions = {};
           extractedFormattedBsDate.bsMonth,
           extractedFormattedBsDate.bsDate
         );
-        extractedFormattedBsDate.bsDay = eqAdDate.getDay() + 1;
+        if (eqAdDate) {
+          extractedFormattedBsDate.bsDay = eqAdDate.getDay() + 1;
+        } else {
+          extractedFormattedBsDate.bsDay = 1;
+        }
       }
 
       return extractedFormattedBsDate;
@@ -792,7 +808,12 @@ var calendarFunctions = {};
         var weekCoverInMonth = Math.ceil((datePickerData.bsMonthFirstAdDate.getDay() + datePickerData.bsMonthDays) / 7);
         var preMonth = datePickerData.bsMonth - 1 !== 0 ? datePickerData.bsMonth - 1 : 12;
         var preYear = preMonth === 12 ? datePickerData.bsYear - 1 : datePickerData.bsYear;
-        var preMonthDays = preYear >= calendarData.minBsYear ? calendarFunctions.getBsMonthDays(preYear, preMonth) : 30;
+        var preMonthDays;
+        try {
+          preMonthDays = calendarFunctions.getBsMonthDays(preYear, preMonth);
+        } catch (e) {
+          preMonthDays = 30;
+        }
         var minBsDate = null;
         var maxBsDate = null;
 

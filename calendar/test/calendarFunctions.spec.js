@@ -76,6 +76,15 @@ describe('Bikram Sambat Calendar Functions', () => {
       assert.equal(date2.getMonth(), 7); // August is 7
       assert.equal(date2.getDate(), 10);
     });
+
+    it('should clamp the day to maximum days in the month if exceeded', () => {
+      // Mansir 2082 has 29 days. Day 30 should clamp to 29.
+      const date = calendarFunctions.getAdDateByBsDate(2082, 8, 30);
+      assert.isNotNull(date);
+      assert.equal(date.getFullYear(), 2025);
+      assert.equal(date.getMonth(), 11); // December = 11
+      assert.equal(date.getDate(), 15); // 2082 Mansir 29 is 2025 Dec 15
+    });
   });
 
   describe('#getBsDateByAdDate()', () => {
@@ -98,6 +107,24 @@ describe('Bikram Sambat Calendar Functions', () => {
       assert.equal(info.bsDate, 25);
       assert.equal(info.formattedDate, 'सोम, साउन २५, २०८३'); // 2083-04-25 is Monday (Monday = 2)
       assert.equal(info.weekDay, 2); // 2 = Monday
+    });
+
+    it('should clamp the date to the maximum days in the month if it exceeds it', () => {
+      // Mansir 2082 has 29 days. Day 30 should clamp to 29.
+      const info = calendarFunctions.getBsMonthInfoByBsDate(2082, 8, 30, '%D, %M %d, %y');
+      assert.equal(info.bsYear, 2082);
+      assert.equal(info.bsMonth, 8);
+      assert.equal(info.bsDate, 29);
+      assert.equal(info.formattedDate, 'सोम, मंसिर २९, २०८२'); // Monday, Mansir 29 (2025-12-15 is Monday)
+      assert.equal(info.weekDay, 2); // Monday = 2
+    });
+  });
+
+  describe('Formatting boundary tests', () => {
+    it('should not crash when bsDateFormat is called with an out of bounds day', () => {
+      // Mansir 2082 has 29 days. Day 30 clamps to 29.
+      const formatted = calendarFunctions.bsDateFormat('%D, %M %d, %y', 2082, 8, 30);
+      assert.equal(formatted, 'सोम, मंसिर २९, २०८२'); // 2025-12-15 is Monday
     });
   });
 });

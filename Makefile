@@ -46,10 +46,14 @@ release-bootstrap: setup-bootstrap
 		npm publish
 
 
-.PHONY: setup-calendar test-calendar release-calendar
+.PHONY: setup-calendar test-calendar build-calendar release-calendar
 
-test-calendar:
+test-calendar: build-calendar
+	git diff --exit-code calendar/dist
 	cd calendar && npm test
+
+build-calendar:
+	cd calendar && npm run build
 
 setup-calendar:
 	cd calendar && npm install
