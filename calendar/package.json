@@ -23,6 +23,7 @@
   },
   "files": [
     "dist",
-    "src"
+    "src",
+    "LICENSE-Apache-2.0"
   ]
 }

@@ -49,7 +49,6 @@ release-bootstrap: setup-bootstrap
 .PHONY: setup-calendar test-calendar build-calendar release-calendar
 
 test-calendar: build-calendar
-	git diff --exit-code calendar/dist
 	cd calendar && npm test
 
 build-calendar:
@@ -58,7 +57,7 @@ build-calendar:
 setup-calendar:
 	cd calendar && npm install
 
-release-calendar: setup-calendar
+release-calendar: setup-calendar build-calendar
 	cd calendar && \
 		../scripts/write-version-number calendar $$(git describe --abbrev=0 --tags) && \
 		npm publish
