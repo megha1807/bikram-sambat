@@ -5,7 +5,7 @@
   "main": "src/nepaliDatePicker.js",
   "style": "src/nepaliDatePicker.css",
   "scripts": {
-    "build": "browserify -e ./src/nepaliDatePicker.js -o dist/nepaliDatePicker.js && node -e \"require('fs').copyFileSync('src/nepaliDatePicker.css', 'dist/nepaliDatePicker.css')\"",
+    "build": "node -e \"require('fs').mkdirSync('dist',{recursive:true})\" && browserify -e ./src/nepaliDatePicker.js -o dist/nepaliDatePicker.js && node -e \"require('fs').copyFileSync('src/nepaliDatePicker.css', 'dist/nepaliDatePicker.css')\"",
     "test": "mocha test/*.spec.js"
   },
   "repository": {

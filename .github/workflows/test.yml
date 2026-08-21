@@ -84,7 +84,6 @@ jobs:
         uses: android-actions/setup-android@v2
 
       - uses: nttld/setup-ndk@v1
-          # ndk-version is matched to gradle build requirements
         id: setup-ndk
         with:
           ndk-version: r17c
